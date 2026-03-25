@@ -1,0 +1,79 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main() {
+    ifstream plik("mecz_przyklad.txt");
+    ofstream wyniki("wyniki1.txt");
+    char tab[10001];
+    plik >> tab;
+    plik.close();
+    
+    int licznik = 0;
+    
+    //4.1
+    
+    for(int i = 1; tab[i] != '\0' ; i++) {
+        if(tab[i] != tab[i-1]) {
+            licznik++;
+        }
+        
+    }
+    wyniki << licznik << endl;
+    
+    //4.2 
+    
+    int punktyA = 0;
+    int punktyB = 0;
+    int wygraneA = 0;
+    int wygraneB = 0;
+    
+    for(int i = 0; tab[i] != '\0'; i++) {
+        if(tab[i] == 'A') {
+            punktyA++;
+        } else if (tab[i] == 'B'){
+            punktyB++;
+        }
+        if(punktyA >= 1000 && punktyA - punktyB >= 3) {
+            wygraneA++;
+            wyniki << "A " << punktyA << ":" << punktyB << endl;
+            break;
+        } else if (punktyB >= 1000 && punktyB - punktyA >= 3) {
+            wygraneB++;
+            wyniki << "B " << punktyB << ":" << punktyA << endl;
+            break;
+        }
+    }
+    
+    //4.3 
+    
+    int passa = 1;
+    int licznikPass = 0;
+    int najdluzszaPassa = 0;
+    char aktualnaDruzyna = tab[0];
+    char najdluzszaDruzyna;
+    for(int i = 1; tab[i] != '\0'; i++) {
+        if(tab[i] == aktualnaDruzyna) {
+            passa++;
+        } else {
+            if(passa >= 10) {
+                licznikPass++;
+            } 
+            if(passa >= najdluzszaPassa) {
+            najdluzszaPassa = passa;
+            najdluzszaDruzyna = aktualnaDruzyna;
+            }
+            aktualnaDruzyna = tab[i];
+            passa = 1;
+        } 
+    }
+    if(passa >= 10) {
+        licznikPass++;
+        if(passa >= najdluzszaPassa) {
+            najdluzszaPassa = passa;
+            najdluzszaDruzyna = aktualnaDruzyna;
+        }
+    }
+    wyniki << licznikPass << " " << najdluzszaPassa << " " << najdluzszaDruzyna << endl;
+}
