@@ -1,0 +1,89 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+bool czyPierwsza(int n) {
+    if (n < 2) {
+        return false;
+    }
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    ifstream plik("liczby_przyklad.txt");
+    ofstream wyniki("wyniki3.txt");
+
+    int tab[100];
+    for (int i = 0; i < 100; i++) {
+        plik >> tab[i];
+    }
+    plik.close();
+
+    // 3.2
+    int licznik = 0;
+    for (int i = 0; i < 100; i++) {
+        int liczba = tab[i] - 1;
+        if (czyPierwsza(liczba)) {
+            licznik++;
+        }
+    }
+    wyniki << licznik << endl;
+
+    // 3.3
+    int maxRoz = 0;
+    int minRoz = 1000000000;
+    int liczbaMax = 0;
+    int liczbaMin = 0;
+
+    for (int i = 0; i < 100; i++) {
+        int x = tab[i];
+        int rozklady = 0;
+
+        for (int p = 2; p <= x / 2; p++) {
+            if (czyPierwsza(p) && czyPierwsza(x - p)) {
+                rozklady++;
+            }
+        }
+
+        if (rozklady > maxRoz) {
+            maxRoz = rozklady;
+            liczbaMax = x;
+        }
+
+        if (rozklady < minRoz) {
+            minRoz = rozklady;
+            liczbaMin = x;
+        }
+    }
+
+    wyniki << liczbaMax << " " << maxRoz << " " << liczbaMin << " " << minRoz << endl;
+
+    // 3.4
+    int cyfry[16] = {0};
+
+    for (int i = 0; i < 100; i++) {
+        int x = tab[i];
+
+        while (x > 0) {
+            int reszta = x % 16;
+            cyfry[reszta]++;
+            x /= 16;
+        }
+    }
+
+    for (int i = 0; i < 16; i++) {
+        if (i < 10) {
+            wyniki << i << ":" << cyfry[i] << endl;
+        } else {
+            wyniki << char('A' + i - 10) << ":" << cyfry[i] << endl;
+        }
+    }
+
+    wyniki.close();
+    return 0;
+}
