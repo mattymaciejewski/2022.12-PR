@@ -1,0 +1,27 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+bool czyMoznaPrzejsc(int x, int y) {
+    while (y > x) {
+        y /= 2;
+    }
+    return y == x;
+}
+
+int main() {
+    ifstream plik("pary.txt");
+    ofstream wyniki("wyniki2.txt");
+
+    int x;
+    int y;
+    while (plik >> x >> y) {
+        if (czyMoznaPrzejsc(x, y)) {
+            wyniki << x << " " << y << endl;
+        }
+    }
+
+    plik.close();
+    wyniki.close();
+    return 0;
+}
